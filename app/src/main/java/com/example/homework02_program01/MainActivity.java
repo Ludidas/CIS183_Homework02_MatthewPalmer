@@ -48,11 +48,14 @@ public class MainActivity extends AppCompatActivity {
         sb_j_blue=findViewById(R.id.sb_v_blue);
 
 
-        Colors colors=new Colors();
+        //Colors colors=new Colors();
         listOfColors=new ArrayList<Colors>();
 
 
         saveColorButtonEventHandler();
+        seekBarEventHandler();
+
+
     }
 
     public void saveColorButtonEventHandler()
@@ -75,12 +78,130 @@ public class MainActivity extends AppCompatActivity {
         int blue=sb_j_blue.getProgress();
 
         //Add a new color to the list with the info from seek bars
-        Colors newColor=new Colors(red, green, blue);
+        //Colors newColor=new Colors(red, green, blue);
 
         //Store the information in the arrayList
-        listOfColors.add(newColor);
+        //listOfColors.add(newColor);
     }
 
+    public void seekBarEventHandler()
+    {
+        Colors newColor=new Colors();
+        //Changes text on number depending on seek bar progress
+        sb_j_red.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b)
+            {
+                //i equals seekbar progress
+                int x=0;
+                String r=Colors.decimalToHex(i);
+                tv_j_redNum.setText(i + "");
+                newColor.setHexRed(r);
+
+                hexModifier(r,x);
+                Log.d("Red",r);
+            }
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {}
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {}
+        });
+
+        sb_j_green.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b)
+            {
+                //i equals seekbar progress
+                int x=1;
+                String g=Colors.decimalToHex(i);
+                tv_j_greenNum.setText(i + "");
+                newColor.setHexGreen(g);
+
+                hexModifier(g,x);
+                Log.d("Green",g);
+            }
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {}
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {}
+        });
+
+        sb_j_blue.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b)
+            {
+                //i equals seekbar progress
+                int x=2;
+                String bl=Colors.decimalToHex(i);
+                tv_j_blueNum.setText(i+"");
+                newColor.setHexBlue(bl);
+
+                hexModifier(bl,x);
+                Log.d("Blue",bl);
+            }
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {}
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {}
+        });
+
+
+
+    }
+
+
+    public void hexModifier(String hexClr, int x)
+    {
+        //i equals seek bar hex portion
+        //x represents the part of the hex which needs to be replaced
+
+        String hex=tv_j_hex.getText().toString();
+        String hexReplace="";
+
+        //If red is changed, add new hex to beginning and re-add rest to new string
+        if(x == 0)
+        {
+            hexReplace+=hexClr;
+
+            for(int i=2;i<6;i++)
+            {
+                hexReplace+=hex.charAt(i);
+            }
+        }
+        //If green is changed, add current hex nums to beginning and end while putting new hex color in middle
+        else if(x==1)
+        {
+            for(int i=0;i<2;i++)
+            {
+                hexReplace+=hex.charAt(i);
+            }
+            hexReplace+=hexClr;
+            for(int i=4; i<6;i++)
+            {
+                hexReplace+=hex.charAt(i);
+            }
+        }
+        //If blue is changed, add first four current hex nums to beginning while putting new color at the end
+        else if(x==2)
+        {
+            for(int i=0; i<4; i++)
+            {
+                hexReplace+=hex.charAt(i);
+            }
+            hexReplace+=hexClr;
+        }
+
+
+
+
+        tv_j_hex.setText(hexReplace);
+        setBackgroundColor();
+    }
+
+    public void setBackgroundColor()
+    {
+
+    }
 
 
 }

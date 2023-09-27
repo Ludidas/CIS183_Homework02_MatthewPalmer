@@ -2,6 +2,8 @@ package com.example.homework02_program01;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -25,7 +27,9 @@ public class MainActivity extends AppCompatActivity {
     SeekBar sb_j_red;
     SeekBar sb_j_green;
     SeekBar sb_j_blue;
-    ArrayList<Colors> listOfColors;
+    ArrayList<ColorInfo> listOfColors;
+    View mainActivity_j;
+
 
 
     @Override
@@ -46,10 +50,10 @@ public class MainActivity extends AppCompatActivity {
         sb_j_red=findViewById(R.id.sb_v_red);
         sb_j_green=findViewById(R.id.sb_v_green);
         sb_j_blue=findViewById(R.id.sb_v_blue);
-
+        mainActivity_j=findViewById(R.id.mainActivity_v);
 
         //Colors colors=new Colors();
-        listOfColors=new ArrayList<Colors>();
+        listOfColors=new ArrayList<ColorInfo>();
 
 
         saveColorButtonEventHandler();
@@ -86,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void seekBarEventHandler()
     {
-        Colors newColor=new Colors();
+        ColorInfo newColor=new ColorInfo();
         //Changes text on number depending on seek bar progress
         sb_j_red.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -94,12 +98,14 @@ public class MainActivity extends AppCompatActivity {
             {
                 //i equals seekbar progress
                 int x=0;
-                String r=Colors.decimalToHex(i);
+                String r=ColorInfo.decimalToHex(i);
                 tv_j_redNum.setText(i + "");
                 newColor.setHexRed(r);
 
                 hexModifier(r,x);
-                Log.d("Red",r);
+                hexBackgroundColor();
+                textColorChange();
+                //Log.d("Red",r);
             }
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {}
@@ -113,12 +119,14 @@ public class MainActivity extends AppCompatActivity {
             {
                 //i equals seekbar progress
                 int x=1;
-                String g=Colors.decimalToHex(i);
+                String g=ColorInfo.decimalToHex(i);
                 tv_j_greenNum.setText(i + "");
                 newColor.setHexGreen(g);
 
                 hexModifier(g,x);
-                Log.d("Green",g);
+                hexBackgroundColor();
+                textColorChange();
+                //Log.d("Green",g);
             }
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {}
@@ -132,12 +140,14 @@ public class MainActivity extends AppCompatActivity {
             {
                 //i equals seekbar progress
                 int x=2;
-                String bl=Colors.decimalToHex(i);
+                String bl=ColorInfo.decimalToHex(i);
                 tv_j_blueNum.setText(i+"");
                 newColor.setHexBlue(bl);
 
                 hexModifier(bl,x);
-                Log.d("Blue",bl);
+                hexBackgroundColor();
+                textColorChange();
+                //Log.d("Blue",bl);
             }
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {}
@@ -191,17 +201,43 @@ public class MainActivity extends AppCompatActivity {
             hexReplace+=hexClr;
         }
 
-
-
-
         tv_j_hex.setText(hexReplace);
-        setBackgroundColor();
     }
 
-    public void setBackgroundColor()
+    public void hexBackgroundColor()
     {
-
+        //Takes hex value from the hex representation to change background color
+        mainActivity_j.setBackgroundColor(Color.parseColor("#"+tv_j_hex.getText().toString()));
     }
+
+    public void textColorChange()
+    {
+        //Change text to be white if all values of red, green, and blue are less than 50, else change it to black
+        if (Integer.parseInt(tv_j_redNum.getText().toString())<50 && Integer.parseInt(tv_j_greenNum.getText().toString())<50 &&
+                Integer.parseInt(tv_j_blueNum.getText().toString())<50)
+        {
+            tv_j_red.setTextColor(Color.parseColor("#FFFFFF"));
+            tv_j_green.setTextColor(Color.parseColor("#FFFFFF"));
+            tv_j_blue.setTextColor(Color.parseColor("#FFFFFF"));
+            tv_j_redNum.setTextColor(Color.parseColor("#FFFFFF"));
+            tv_j_greenNum.setTextColor(Color.parseColor("#FFFFFF"));
+            tv_j_blueNum.setTextColor(Color.parseColor("#FFFFFF"));
+            tv_j_represent.setTextColor(Color.parseColor("#FFFFFF"));
+            tv_j_hex.setTextColor(Color.parseColor("#FFFFFF"));
+        }
+        else
+        {
+            tv_j_red.setTextColor(Color.parseColor("#000000"));
+            tv_j_green.setTextColor(Color.parseColor("#000000"));
+            tv_j_blue.setTextColor(Color.parseColor("#000000"));
+            tv_j_redNum.setTextColor(Color.parseColor("#000000"));
+            tv_j_greenNum.setTextColor(Color.parseColor("#000000"));
+            tv_j_blueNum.setTextColor(Color.parseColor("#000000"));
+            tv_j_represent.setTextColor(Color.parseColor("#000000"));
+            tv_j_hex.setTextColor(Color.parseColor("#000000"));
+        }
+    }
+
 
 
 }

@@ -1,16 +1,16 @@
 package com.example.homework02_program01;
 
-public class Colors
+public class ColorInfo
 {
     private String hexRed;
     private String hexGreen;
     private String hexBlue;
 
-    public Colors()
+    public ColorInfo()
     {
 
     }
-    public Colors(String r, String g, String b)
+    public ColorInfo(String r, String g, String b)
     {
         this.hexRed=r;
         this.hexGreen=g;
@@ -35,16 +35,29 @@ public class Colors
     //Decimal to Hexadecimal Converter
     public static String decimalToHex(int d) {
         String digits = "0123456789ABCDEF";
-        if (d <= 0) return "0";
         int base = 16;   // flexible to change in any base under 16
         String hex = "";
+
+        //Catches single digit values
+        if (d <= 0) return "00";
+        if (d>0 && d<16)
+        {
+            int digit=d%base;
+            hex="0"+digits.charAt(digit);
+
+            return hex;
+        }
+
+        //Handles all double digit values
         while (d > 0)
         {
-            int digit = d % base;              // rightmost digit
+            int digit = d % base; // rightmost digit
             hex = digits.charAt(digit) + hex;  // string concatenation
             d = d / base;
         }
+
         return hex;
     }
+
 
 }

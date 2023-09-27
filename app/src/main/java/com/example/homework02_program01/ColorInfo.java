@@ -2,19 +2,22 @@ package com.example.homework02_program01;
 
 public class ColorInfo
 {
+    //hex portions are saved in "FF" format and added together to make the full hex
     private String hexRed;
     private String hexGreen;
     private String hexBlue;
+    private String hexCode;
 
     public ColorInfo()
     {
 
     }
-    public ColorInfo(String r, String g, String b)
+    public ColorInfo(String r, String g, String b, String h)
     {
         this.hexRed=r;
         this.hexGreen=g;
         this.hexBlue=b;
+        this.hexCode=h;
     }
 
     //Getters-Setters
@@ -29,6 +32,9 @@ public class ColorInfo
     public String getHexBlue() {return hexBlue;}
 
     public void setHexBlue(String hexBlue) {this.hexBlue = hexBlue;}
+    public String getHex() {return hexCode;}
+
+    public void setHex(String hexCode) {this.hexCode = hexCode;}
 
     //--------------------------------------------------------------------------------------
 
@@ -58,6 +64,8 @@ public class ColorInfo
 
         return hex;
     }
+
+
 
 
 }

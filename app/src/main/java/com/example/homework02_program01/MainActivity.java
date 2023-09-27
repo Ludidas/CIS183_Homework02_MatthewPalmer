@@ -7,7 +7,9 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -27,7 +29,9 @@ public class MainActivity extends AppCompatActivity {
     SeekBar sb_j_red;
     SeekBar sb_j_green;
     SeekBar sb_j_blue;
+    ListView lv_j_colorList;
     ArrayList<ColorInfo> listOfColors;
+    ColorListAdapter adapter;
     View mainActivity_j;
 
 
@@ -50,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
         sb_j_red=findViewById(R.id.sb_v_red);
         sb_j_green=findViewById(R.id.sb_v_green);
         sb_j_blue=findViewById(R.id.sb_v_blue);
+        lv_j_colorList=findViewById(R.id.lv_v_colorList);
         mainActivity_j=findViewById(R.id.mainActivity_v);
 
         //Colors colors=new Colors();
@@ -58,6 +63,8 @@ public class MainActivity extends AppCompatActivity {
 
         saveColorButtonEventHandler();
         seekBarEventHandler();
+        listViewEventHandler();
+        fillListView();
 
 
     }
@@ -71,22 +78,28 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("Bababooey",sb_j_blue.getProgress()+"");
 
                 addColor();
+                adapter.notifyDataSetChanged();
+                resetBackgroundColor();
             }
         });
     }
     public void addColor()
     {
-        //Get int from the seek bars based on what the number is
-        int red=sb_j_red.getProgress();
-        int green=sb_j_green.getProgress();
-        int blue=sb_j_blue.getProgress();
-
         //Add a new color to the list with the info from seek bars
-        //Colors newColor=new Colors(red, green, blue);
+        ColorInfo newColorInfo=new ColorInfo(tv_j_redNum.getText().toString(), tv_j_greenNum.getText().toString(),
+                tv_j_blueNum.getText().toString(), tv_j_hex.getText().toString());
 
         //Store the information in the arrayList
-        //listOfColors.add(newColor);
+        listOfColors.add(newColorInfo);
     }
+
+    public void fillListView()
+    {
+        adapter=new ColorListAdapter(this, listOfColors);
+        lv_j_colorList.setAdapter(adapter);
+    }
+
+    //=============================================================================================
 
     public void seekBarEventHandler()
     {
@@ -159,6 +172,29 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void listViewEventHandler()
+    {
+        lv_j_colorList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l)
+            {
+
+                tv_j_redNum.setText(listOfColors.get(i).getHexRed());
+                tv_j_greenNum.setText(listOfColors.get(i).getHexGreen());
+                tv_j_blueNum.setText(listOfColors.get(i).getHexBlue());
+                tv_j_hex.setText(listOfColors.get(i).getHex());
+                sb_j_red.setProgress(Integer.parseInt(listOfColors.get(i).getHexRed()));
+                sb_j_green.setProgress(Integer.parseInt(listOfColors.get(i).getHexGreen()));
+                sb_j_blue.setProgress(Integer.parseInt(listOfColors.get(i).getHexBlue()));
+                hexBackgroundColor();
+
+
+                Log.d("int i", i +"");
+            }
+        });
+    }
+
+    //==================================================================================
 
     public void hexModifier(String hexClr, int x)
     {
@@ -238,6 +274,21 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void resetBackgroundColor()
+    {
+        tv_j_hex.setText("FFFFFF");
+        tv_j_redNum.setText("255");
+        tv_j_greenNum.setText("255");
+        tv_j_blueNum.setText("255");
+        sb_j_red.setProgress(255);
+        sb_j_green.setProgress(255);
+        sb_j_blue.setProgress(255);
+
+
+        //resets the colors
+        hexBackgroundColor();
+        textColorChange();
+    }
 
 
 }

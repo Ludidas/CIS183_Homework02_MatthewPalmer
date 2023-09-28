@@ -1,3 +1,8 @@
+//==========================================
+//Name: Matthew Palmer
+//Date: 9/29/2023
+//Desc: Hex-Color Picker/Changer App
+//==========================================
 package com.example.homework02_program01;
 
 import androidx.appcompat.app.AppCompatActivity;
